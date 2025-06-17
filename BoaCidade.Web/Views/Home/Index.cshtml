@@ -1,0 +1,128 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@section Scripts {
+    <script src="~/js/home/module.js"></script>
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .post-card {
+        margin-bottom: 24px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+
+    .post-header {
+        background-color: #ffffff;
+        padding: 16px;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .post-body {
+        padding: 16px;
+    }
+
+    .post-image {
+        width: 100%;
+        max-height: 400px;
+        object-fit: fit;
+    }
+
+    .icon-button {
+        border: none;
+        background: none;
+        color: #495057;
+        cursor: pointer;
+    }
+
+        .icon-button:hover {
+            color: #0d6efd;
+        }
+
+    .form-postagem {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        margin-bottom: 32px;
+    }
+</style>
+
+<div class="" ng-controller="HomeController" ng-init="iniciar()">
+    <div class="container py-4">
+        <h2 class="text-center mb-4"><i class="fas fa-bullhorn me-2"></i>Publicações da Comunidade</h2>
+
+        <!-- Formulário para nova postagem -->
+        <form ng-submit="publicarPostagem()" class="form-postagem mb-5" ng-if="idUsuarioLogado != null">
+            <h5 class="mb-3"><i class="fas fa-plus me-2"></i>Nova Publicação</h5>
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label for="endereco" class="form-label">Título</label>
+                    <input required type="text" id="titulo" class="form-control" ng-model="novaPostagem.titulo" placeholder="Ex: Problema de saneamento">
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="endereco" class="form-label">Endereço</label>
+                    <input required type="text" id="endereco" class="form-control" ng-model="novaPostagem.endereco" placeholder="Ex: Rua Exemplo, 123">
+                </div> 
+        
+                <div class="col-md-6">
+                    <label for="tipo" class="form-label">Tipo</label>
+                    <select class="form-select" id="tipo" ng-model="publicacao.tipo">
+                        <option value="DENUNCIA">Denúncia</option>
+                        <option value="SUGESTAO">Sugestão</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="imagem" class="form-label">URL da Imagem</label>
+                    <input required type="text" id="imagem" class="form-control" ng-model="novaPostagem.urlImage" placeholder="https://exemplo.com/imagem.jpg">
+                </div>
+
+                <div class="col-md-12">
+                    <label for="motivo" class="form-label">Motivo</label>
+                    <textarea required id="motivo" class="form-control" ng-model="novaPostagem.descricao" placeholder="Descreva o motivo da publicação" rows="3"></textarea>
+                </div>
+             
+                <div class="col-12 text-end">
+                    <button class="btn btn-primary mt-3" type="submit">
+                        <i class="fas fa-paper-plane me-1"></i>Publicar
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Lista de publicações -->
+        <h3 class="text-center" ng-show="publicacoes.length == 0">Não há publicações</h3>
+        <div class="card post-card border-0 shadow" ng-repeat="post in publicacoes">
+            <div class="post-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-0">{{ post.autor.name}}</h5>
+                    <small class="text-muted"><i class="far fa-calendar-alt me-1"></i>16/06/2025 18:38</small>
+                </div>
+                <div>
+                    <i class="fas fa-map-marker-alt me-1 text-danger"></i>
+                    <span class="text-muted">{{ post.endereco }}</span>
+                </div>
+            </div>
+            <img ng-src="{{post.urlImage}}" class="post-image" alt="Imagem da publicação">
+
+            <div class="post-body">
+                <p class="mb-3"><strong>Título:</strong> {{ post.titulo}}</p>
+                <p class="mb-3"><strong>Motivo:</strong> {{ post.descricao }}</p>
+
+                <div class="d-flex align-items-center gap-3">
+                    <button ng-class="post.curtido ? 'text-primary' : ''" ng-click="curtirPostagem(post)" class="icon-button"><i class="fas fa-thumbs-up"></i> Curtir</button>
+                    <button class="icon-button"><i class="fas fa-comment"></i> Comentar</button>
+                    <button ng-click="excluirPostagem(post)"class="icon-button text-danger"><i class="fas fa-trash"></i> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

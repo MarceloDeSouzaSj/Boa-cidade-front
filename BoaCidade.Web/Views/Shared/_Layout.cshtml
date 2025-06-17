@@ -1,0 +1,82 @@
+﻿@{
+}
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - Boa cidade</title>
+	<link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+	<link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="~/css/site.css" />
+
+</head>
+<loader-global></loader-global>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <i class="fas fa-city fa-lg text-primary me-2"></i>
+                    <strong>Boa Cidade</strong>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home"><i class="fas fa-bullhorn me-1"></i>Publicações</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-user me-1"></i>Perfil</a>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex">
+                        <a href="Conta/Login" class="btn btn-outline-secondary me-2"><i class="fas fa-sign-in-alt me-1"></i>Login</a>
+                        <a href="Conta/Cadastro" class="btn btn-primary"><i class="fas fa-user-plus me-1"></i>Cadastrar</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+	<div class="d-flex flex-column min-vh-100">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+
+	<div class="container fixed-bottom d-flex justify-content-center mb-3">
+		<div ng-if="mensagemGlobal" class="alert alert-global d-flex align-items-center gap-3 w-auto position-relative py-4"
+			 ng-class="{
+           'alert-success': mensagemGlobal.tipo === 'success',
+           'alert-danger': mensagemGlobal.tipo === 'error',
+           'alert-warning': mensagemGlobal.tipo === 'warning',
+           'alert-info': mensagemGlobal.tipo === 'info'
+         }">
+
+			<button type="button" class="btn-close position-absolute top-0 end-0 m-2" ng-show="mensagemGlobal"
+					ng-click="mensagemGlobal = null"></button>
+
+			<i ng-show="mensagemGlobal.tipo === 'success'" class="fa fs-3 fa-solid fa-circle-check"></i>
+			<i ng-show="mensagemGlobal.tipo === 'error'" class="fa fa-triangle-exclamation fs-3"></i>
+			<i ng-show="mensagemGlobal.tipo === 'warning'" class="fa fs-3 fa-solid fa-triangle-exclamation"></i>
+			<i ng-show="mensagemGlobal.tipo === 'info'" class="fa fa-solid fs-3 fa-circle-info"></i>
+			<span ng-bind="mensagemGlobal.texto"></span>
+		</div>
+	</div>
+	<footer class="border-top footer text-muted mt-auto">
+		<div class="container">
+			&copy; 2025 - Boa Cidade - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+		</div>
+	</footer>
+
+	<script src="~/lib/bootstrap/newJs/bootstrap.bundle.min.js"></script>
+
+	@await Html.PartialAsync("_ValidationScriptsPartial")
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
